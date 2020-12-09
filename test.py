@@ -202,5 +202,120 @@ def day4_2():
 	print(validPassports)
 
 
+def day5():
+	inputArray = readCSV('input5',delimiter='\n')
+	maxid = 0
+	for row in inputArray:
+		boardp = row[0]
+		#find row
+		minRow = 0
+		maxRow = 127
+		i = 0
+		while i < 7:
+			if boardp[i] == "F":
+				maxRow = int(minRow + (maxRow-minRow)/2)
+			else:
+				minRow = int(minRow + (maxRow-minRow)/2) + 1
+			i = i+1
+		# find columns
+		minCol = 0
+		maxCol = 7
+		while i < 10:
+			if boardp[i] == "L":
+				maxCol = int(minCol + (maxCol-minCol)/2)
+			else:
+				minCol = int(minCol + (maxCol-minCol)/2) + 1
+			i = i+1
+		id = maxRow * 8 + maxCol
+		print(maxCol)
+		print(minCol)
+		print(id)
+		print("-------")
+		if maxid < id:
+			maxid = id
+	print(maxid)
 
-day4_2()
+
+def day5_2():
+	inputArray = readCSV('input5',delimiter='\n')
+	emptySeats = [[i*8+j for j in range(8)] for i in range(128)]
+	for row in inputArray:
+		boardp = row[0]
+		#find row
+		minRow = 0
+		maxRow = 127
+		i = 0
+		while i < 7:
+			if boardp[i] == "F":
+				maxRow = int(minRow + (maxRow-minRow)/2)
+			else:
+				minRow = int(minRow + (maxRow-minRow)/2) + 1
+			i = i+1
+		# find columns
+		minCol = 0
+		maxCol = 7
+		while i < 10:
+			if boardp[i] == "L":
+				maxCol = int(minCol + (maxCol-minCol)/2)
+			else:
+				minCol = int(minCol + (maxCol-minCol)/2) + 1
+			i = i+1
+		id = maxRow * 8 + maxCol
+		emptySeats[maxRow][maxCol] = False
+	idx = 1
+	while idx < 127:
+		jdx = 1
+		while jdx < 7:
+			if emptySeats[idx][jdx] != False and emptySeats[idx][jdx + 1] == False and emptySeats[idx][jdx - 1] == False:
+				print(emptySeats[idx][jdx])
+			jdx = jdx +1
+		idx = idx +1
+
+def day6():
+	inputArray = readCSV('input6',delimiter='\n')
+	answers = 0
+	newanswer = ''
+	for row in inputArray:
+		if len(row) != 0:
+			i = 0
+			while i < len(row):
+				j = 0
+				while j < len(row[i]):
+					if newanswer.find(row[i][j]) == -1:
+						newanswer = newanswer + row[i][j]
+						
+					j = j+1
+				i=i+1
+		else:
+			print(newanswer)
+			answers = answers + len(newanswer)
+			newanswer = ''
+	answers = answers + len(newanswer)
+	print(answers)
+
+def day6_2():
+	inputArray = readCSV('input6',delimiter='\n')
+	answers = 0
+	newanswer = inputArray[0][0]
+	rowIdx = 0
+	while rowIdx < len(inputArray):
+		row = inputArray[rowIdx]
+		if len(row) != 0:
+			i = 0
+			while i < len(row):
+				j = 0
+				thisanswer = ''
+				while j < len(row[i]):
+					if newanswer.find(row[i][j]) != -1:
+						thisanswer = thisanswer + row[i][j]
+					j = j+1
+				newanswer = thisanswer			
+				i=i+1
+		else:
+			answers = answers + len(newanswer)
+			newanswer = inputArray[rowIdx + 1][0]
+		rowIdx = rowIdx + 1
+	answers = answers + len(newanswer)
+	print(answers)
+
+day6_2()
